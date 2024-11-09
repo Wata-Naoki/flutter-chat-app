@@ -18,7 +18,9 @@ class ChatApp extends StatelessWidget {
     return MaterialApp(
         title: 'ChatApp',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.blue, // AppBarの背景色を青に設定
+          appBarTheme: AppBarTheme(
+              backgroundColor: Colors.blue, foregroundColor: Colors.white),
         ),
         home: LoginPage());
   }
@@ -160,7 +162,7 @@ class ChatPage extends StatelessWidget {
         onPressed: () async {
           await Navigator.of(context).push(
             MaterialPageRoute(builder: (context) {
-              return AddPostPage();
+              return AddPostPage(user);
             }),
           );
         },
@@ -169,21 +171,35 @@ class ChatPage extends StatelessWidget {
   }
 }
 
-class AddPostPage extends StatelessWidget {
+class AddPostPage extends StatefulWidget {
+  AddPostPage(this.user);
+  final User user;
+
+  @override
+  _AddPostPageState createState() => _AddPostPageState();
+}
+
+class _AddPostPageState extends State<AddPostPage> {
+  String messageText = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AddPostPage'),
+        title: Text('チャット投稿'),
       ),
       body: Center(
-        child: ElevatedButton(
-          child: Text('戻る'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          child: Container(
+        padding: EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextFormField(
+              decoration: InputDecoration(labelText: '投稿メッセージ'),
+            )
+          ],
         ),
-      ),
+      )),
     );
   }
 }
